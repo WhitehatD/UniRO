@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">UniRO</string>
+    <string name="this_is_the_student_outline">This is the student outline</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="sign_in">Sign In</string>
+    <string name="made_by_team_bright">Made By Team Bright</string>
+    <string name="uniro">UniRO</string>
+    <string name="email">Email</string>
+    <string name="name">Name</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="register">Register</string>
+    <string name="login">Login</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="logout">LogOut</string>
+    <string name="verify_now">Verify Now</string>
+    <string name="email_not_verified">Email Not Verified!</string>
+    <string name="email_not_verified_if_you_already_verified_your_email_please_re_login">Email Not Verified. If you already verified your email please re-login</string>
+</resources>

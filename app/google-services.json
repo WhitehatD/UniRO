@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "438575846219",
+    "project_id": "authentication-uniro",
+    "storage_bucket": "authentication-uniro.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:438575846219:android:b0480c49b269614d2e0ece",
+        "android_client_info": {
+          "package_name": "com.example.uniro"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "438575846219-oa5hg8j1chds9ga6g8oebk8rnsb6s7fn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA31wKqnzrua517QD8IPC0AwI8ZuXOZr5c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "438575846219-oa5hg8j1chds9ga6g8oebk8rnsb6s7fn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
