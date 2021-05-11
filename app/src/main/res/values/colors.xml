@@ -19,4 +19,5 @@
     <!-- Button background -->
 
     <color name="colorButtonBackground">#26FFFFFF</color>
+    <color name="transparentWhite">#26FFFFFF</color>
 </resources>

@@ -4,29 +4,37 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-        tools:context=".UniversityListActivity"
-    android:id="@+id/layout"
-    android:background="@drawable/background_gradient_list">
+    tools:context=".UniversityListActivity"
+    android:background="@drawable/background_gradient_list"
+    android:id="@+id/layout">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/universityList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="50dp"
+        app:layout_constraintBottom_toTopOf="@+id/logOut"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/logOut"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:backgroundTint="@color/colorBackgroundGradientCenter"
         android:onClick="logout"
         android:text="@string/logout"
-        android:textColor="#000000"
+        android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.377" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/emailNotVerified"
         android:layout_width="125dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="25dp"
         android:text="@string/email_not_verified_if_you_already_verified_your_email_please_re_login"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
@@ -39,48 +47,26 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="25dp"
         android:backgroundTint="#EF0000"
+        android:cursorVisible="false"
         android:text="@string/verify_now"
         android:textColor="#000000"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/emailNotVerified"/>
+        app:layout_constraintTop_toBottomOf="@+id/emailNotVerified" />
 
-    <TextView
-        android:id="@+id/txtName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="45dp"
-        android:text="Name"
+    <SearchView
+        android:layout_width="350dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="2dp"
+        android:layoutDirection="rtl"
+        app:layout_constraintBottom_toTopOf="@+id/universityList"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.494"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtEmail" />
-
-    <TextView
-        android:id="@+id/txtEmail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Email"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/logOut" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycle"
-        android:layout_width="413dp"
-        android:layout_height="718dp"
-        android:layout_marginStart="1dp"
-        android:layout_marginTop="1dp"
-        android:layout_marginEnd="1dp"
-        android:layout_marginBottom="1dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.25"
+        app:layout_constraintHorizontal_bias="0.15"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.79"
+        android:id="@+id/searchView"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

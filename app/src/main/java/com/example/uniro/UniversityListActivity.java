@@ -11,27 +11,29 @@ import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
-import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.Query;
 
 import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
 
 public class UniversityListActivity extends AppCompatActivity {
 
@@ -39,10 +41,11 @@ public class UniversityListActivity extends AppCompatActivity {
     private TextView verifyMsg;
     private FirebaseAuth fAuth;
     private FirebaseFirestore fStore;
-    private TextView name, email;
     private String userID;
-    private RecyclerView recyclerView;
-    private FirestoreRecyclerAdapter adapter;
+    RecyclerView recyclerView;
+    DatabaseReference database;
+    UniversityAdapter universityAdapter;
+    ArrayList<University> list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,10 +58,40 @@ public class UniversityListActivity extends AppCompatActivity {
         animationDrawable.setExitFadeDuration(4000);
         animationDrawable.start();
 
-        name = findViewById(R.id.txtName);
-        email = findViewById(R.id.txtEmail);
+        ///setting the recycler view
 
-        recyclerView = findViewById(R.id.recycle);
+        recyclerView = findViewById(R.id.universityList);
+        database = FirebaseDatabase.getInstance().getReference("university");
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        list = new ArrayList<>();
+        universityAdapter = new UniversityAdapter(this, list);
+        recyclerView.setAdapter(universityAdapter);
+
+        database.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+
+                for(DataSnapshot dataSnapshot : snapshot.getChildren()){
+                    University university = dataSnapshot.getValue(University.class);
+                    list.add(university);
+                }
+                universityAdapter.notifyDataSetChanged();
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+            }
+        });
+
+
+
+
+
+
 
         resendCode = findViewById(R.id.verifyNowButton);
         verifyMsg = findViewById(R.id.emailNotVerified);
@@ -74,38 +107,11 @@ public class UniversityListActivity extends AppCompatActivity {
                 if (error!=null){
                         Log.d("tag","Error:"+error.getMessage());
                 }else {
-                        name.setText(value.getString("name"));
-                        email.setText(value.getString("email"));
+                        Toast.makeText(getApplicationContext(), "Hello, " + value.getString("name"),Toast.LENGTH_SHORT).show();
                 }
-
+                
             }
         });
-
-        Query query = fStore.collection("uni");
-
-        FirestoreRecyclerOptions<Universitate> options = new FirestoreRecyclerOptions.Builder<Universitate>()
-                                .setQuery(query, Universitate.class)
-                                .build();
-
-        adapter = new FirestoreRecyclerAdapter<Universitate, UniversitateView>(options) {
-            @NonNull
-            @NotNull
-            @Override
-            public UniversitateView onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_uni, parent, false);
-                return new UniversitateView(view);
-            }
-
-            @Override
-            protected void onBindViewHolder(@NonNull @NotNull UniversitateView holder, int position, @NonNull @NotNull Universitate model) {
-                holder.uni_name.setText(model.getName());
-                holder.uni_desc.setText(model.getDesc());
-            }
-        };
-
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(adapter);
 
         final FirebaseUser user = fAuth.getCurrentUser();
             if(!user.isEmailVerified()){
@@ -133,22 +139,12 @@ public class UniversityListActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    protected void onStop(){
-        super.onStop();
-        adapter.stopListening();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        adapter.startListening();
-    }
-
     public void logout(View view) {
         fAuth = FirebaseAuth.getInstance();
         fAuth.signOut();
         startActivity(new Intent(UniversityListActivity.this, MainActivity.class));
         finish();
     }
+
+    
 }
