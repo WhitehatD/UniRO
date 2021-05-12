@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +35,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class UniversityListActivity extends AppCompatActivity {
 
@@ -46,6 +48,11 @@ public class UniversityListActivity extends AppCompatActivity {
     DatabaseReference database;
     UniversityAdapter universityAdapter;
     ArrayList<University> list;
+    SearchView searchView;
+
+    private TextView userNameView;
+    private TextView userEmailView;
+    private ConstraintLayout drawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +67,12 @@ public class UniversityListActivity extends AppCompatActivity {
 
         ///setting the recycler view
 
+        userNameView = findViewById(R.id.userNameView);
+        userEmailView = findViewById(R.id.userEmailView);
+        drawer = findViewById(R.id.drawer);
+
         recyclerView = findViewById(R.id.universityList);
+        searchView = findViewById(R.id.searchView);
         database = FirebaseDatabase.getInstance().getReference("university");
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -78,6 +90,20 @@ public class UniversityListActivity extends AppCompatActivity {
                     list.add(university);
                 }
                 universityAdapter.notifyDataSetChanged();
+                if(searchView != null){
+                    searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                        @Override
+                        public boolean onQueryTextSubmit(String query) {
+                            return false;
+                        }
+
+                        @Override
+                        public boolean onQueryTextChange(String newText) {
+                            search(newText);
+                            return false;
+                        }
+                    });
+                }
 
             }
 
@@ -86,8 +112,6 @@ public class UniversityListActivity extends AppCompatActivity {
 
             }
         });
-
-
 
 
 
@@ -109,6 +133,14 @@ public class UniversityListActivity extends AppCompatActivity {
                 }else {
                         Toast.makeText(getApplicationContext(), "Hello, " + value.getString("name"),Toast.LENGTH_SHORT).show();
                 }
+
+                if(value != null)
+                {
+                    userNameView.setText(Objects.requireNonNull(value.get("name")).toString());
+                    userEmailView.setText(Objects.requireNonNull(value.get("email")).toString());
+                }
+
+
                 
             }
         });
@@ -146,5 +178,33 @@ public class UniversityListActivity extends AppCompatActivity {
         finish();
     }
 
-    
+    private void search(String str){
+        ArrayList<University> myList = new ArrayList<>();
+        for(University object : list){
+            if(object.getName().toLowerCase().contains(str.toLowerCase())){
+               myList.add(object);
+            }
+        }
+        UniversityAdapter myAdapter = new UniversityAdapter(this,myList);
+        recyclerView.setAdapter(myAdapter);
+    }
+
+
+    public void openDrawer(View view) {
+
+        if(drawer.getVisibility() == View.VISIBLE){
+
+            drawer.setVisibility(View.GONE);
+
+        }else {
+
+            drawer.setVisibility(View.VISIBLE);
+
+        }
+
+    }
+
+    public void openInfo(View view) {
+        startActivity(new Intent(UniversityListActivity.this, AppInfoActivity.class));
+    }
 }

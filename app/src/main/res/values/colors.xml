@@ -20,4 +20,6 @@
 
     <color name="colorButtonBackground">#26FFFFFF</color>
     <color name="transparentWhite">#26FFFFFF</color>
+    <color name="colorCustomBackgroundColored">#7700A6A6</color>
+
 </resources>
